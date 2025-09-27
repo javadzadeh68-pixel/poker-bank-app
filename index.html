@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>بانک پوکر</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2KjYp9mG2qkg2b7ZiNqp2LEiLCJzaG9ydF9uYW1lIjoi2KjYp9mG2qkg2b7ZiNqp2LEiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwidGhlbWVfY29sb3IiOiIjMmE1Mjk4IiwiYmFja2dyb3VuZF9jb2xvciI6IiNmZmZmZmYiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTWpRaUlHaGxhV2RvZEQwaU1qUWlJSFpwWlhkQ2IzZzlJakFnTUNBeU5DQXlOQ0k+UEdOcGNtTnNaU0JqZUQwaU1USWlJR041UFNJeE1pSWdjajBpTlNJZ1ptbHNiRDBpSTJOalpEQWlMejQ4Y0dGMGFDQmtQU0p0Tm01VGJDNTJhR3RJVFZCRWJqY2lJR1pwYkd3OUlpTm1abVk2TUNBaUx6NDhMM04yWno0PSIsInNpemVzIjoiMjR4MjQiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    <meta name="theme-color" content="#2a5298">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: #2a5298;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(42, 82, 152, 0.3);
+            transition: all 0.3s;
+        }
+
+        .menu-btn:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .menu-overlay.show {
+            display: block;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .menu-close {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 10px;
+            text-align: right;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 4px solid #2a5298;
+        }
+
+        .menu-item:hover {
+            background: #e9ecef;
+            transform: translateX(-5px);
+        }
+
+        .main-content {
+            transition: all 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #2a5298;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e3c72;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            width: auto;
+            padding: 8px 15px;
+            margin-bottom: 20px;
+        }
+
+        .player-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-right: 4px solid #2a5298;
+        }
+
+        .player-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .player-stats {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .game-result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .profit {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .loss {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .history-date {
+            font-weight: bold;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        .player-result {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stats-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .balance-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .balance-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .balance-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .summary-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20% auto;
+            max-width: 320px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-overlay" onclick="closeMenu()"></div>
+    
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <h3>📋 منوی اصلی</h3>
+            <button class="menu-close" onclick="closeMenu()">✕</button>
+        </div>
+        <button class="menu-item" onclick="showPage('history')">📜 تاریخچه بازی‌ها</button>
+        <button class="menu-item" onclick="showPage('stats')">📊 آمار بازیکنان</button>
+        <button class="menu-item" onclick="showPage('main')">🎰 صفحه اصلی</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <button class="menu-btn" onclick="openMenu()">☰</button>
+            <h1>🎰 بانک پوکر</h1>
+            <p>مدیریت کامل حسابداری بازی‌های پوکر</p>
+        </div>
+
+        <!-- صفحه اصلی -->
+        <div id="main" class="page active">
+            <div class="main-content">
+                <div id="setup-phase">
+                    <h3 style="margin-bottom: 15px;">📋 تنظیمات بازی</h3>
+                    
+                    <div class="form-group">
+                        <label>تاریخ بازی:</label>
+                        <input type="date" id="game-date">
+                    </div>
+
+                    <div class="form-group">
+                        <label>نام بازیکن:</label>
+                        <input type="text" id="player-name" placeholder="نام بازیکن را وارد کنید">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addPlayer()">➕ اضافه کردن بازیکن</button>
+
+                    <div id="players-list"></div>
+
+                    <button class="btn btn-success" onclick="startGame()" style="margin-top: 20px;">🎮 شروع بازی</button>
+                </div>
+
+                <div id="game-phase" style="display: none;">
+                    <h3 style="margin-bottom: 15px;">🎯 مرحله بازی</h3>
+                    
+                    <div class="form-group">
+                        <label>انتخاب بازیکن:</label>
+                        <select id="current-player"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>خرید (تومان):</label>
+                        <input type="number" id="buy-in" placeholder="مقدار خرید">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addBuyIn()">💰 ثبت خرید</button>
+
+                    <div id="current-game-info"></div>
+
+                    <button class="btn btn-success" onclick="finishGame()" style="margin-top: 20px;">🏁 پایان بازی</button>
+                </div>
+
+                <div id="finish-phase" style="display: none;">
+                    <h3 style="margin-bottom: 15px;">🏆 پایان بازی</h3>
+                    
+                    <div id="balance-check"></div>
+                    
+                    <div class="form-group">
+                        <label>انتخاب بازیکن:</label>
+                        <select id="finish-player"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>چیپ نهایی (تومان):</label>
+                        <input type="number" id="final-chips" placeholder="مقدار چیپ نهایی">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="setFinalChips()">🎲 ثبت چیپ نهایی</button>
+
+                    <div id="final-results"></div>
+
+                    <button class="btn btn-success" onclick="saveGame()" id="save-btn">💾 ذخیره بازی</button>
+                    <button class="btn btn-secondary" onclick="resetGame()">🔄 بازی جدید</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحه تاریخچه -->
+        <div id="history" class="page">
+            <button class="btn btn-back" onclick="showPage('main')">← برگشت</button>
+            <h3 style="margin-bottom: 15px;">📜 تاریخچه بازی‌ها</h3>
+            <div id="games-history"></div>
+        </div>
+
+        <!-- صفحه آمار -->
+        <div id="stats" class="page">
+            <button class="btn btn-back" onclick="showPage('main')">← برگشت</button>
+            <h3 style="margin-bottom: 15px;">📊 آمار بازیکنان</h3>
+            <div id="players-stats"></div>
+        </div>
+    </div>
+
+    <!-- مودال تایید -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div id="modal-message"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn" style="background: #28a745; color: white;" onclick="confirmAction()">تایید</button>
+                <button class="modal-btn" style="background: #6c757d; color: white;" onclick="closeModal()">لغو</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentGame = {
+            date: '',
+            players: [],
+            buyIns: {},
+            finalChips: {},
+            results: {}
+        };
+
+        let gameHistory = JSON.parse(localStorage.getItem('pokerGameHistory') || '[]');
+        let allPlayers = new Set(JSON.parse(localStorage.getItem('pokerAllPlayers') || '[]'));
+        let confirmCallback = null;
+
+        // تنظیم تاریخ پیش‌فرض
+        document.getElementById('game-date').valueAsDate = new Date();
+
+        function openMenu() {
+            document.getElementById('sideMenu').classList.add('open');
+            document.querySelector('.menu-overlay').classList.add('show');
+        }
+
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.querySelector('.menu-overlay').classList.remove('show');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            closeMenu();
+
+            if (pageId === 'history') {
+                loadHistory();
+            } else if (pageId === 'stats') {
+                loadStats();
+            }
+        }
+
+        function addPlayer() {
+            const playerName = document.getElementById('player-name').value.trim();
+            
+            if (!playerName) {
+                showAlert('لطفا نام بازیکن را وارد کنید', 'danger');
+                return;
+            }
+
+            if (currentGame.players.includes(playerName)) {
+                showAlert('این بازیکن قبلا اضافه شده است', 'danger');
+                return;
+            }
+
+            currentGame.players.push(playerName);
+            allPlayers.add(playerName);
+            currentGame.buyIns[playerName] = 0;
+            currentGame.finalChips[playerName] = 0;
+
+            document.getElementById('player-name').value = '';
+            updatePlayersList();
+            saveToStorage();
+        }
+
+        function removePlayer(playerName) {
+            showConfirm(`آیا مطمئنید که می‌خواهید "${playerName}" را حذف کنید؟`, () => {
+                const index = currentGame.players.indexOf(playerName);
+                if (index > -1) {
+                    currentGame.players.splice(index, 1);
+                    delete currentGame.buyIns[playerName];
+                    delete currentGame.finalChips[playerName];
+                    updatePlayersList();
+                }
+            });
+        }
+
+        function updatePlayersList() {
+            const playersList = document.getElementById('players-list');
+            playersList.innerHTML = '';
+
+            if (currentGame.players.length === 0) {
+                playersList.innerHTML = '<p style="text-align: center; color: #666; margin: 20px 0;">هنوز بازیکنی اضافه نشده</p>';
+                return;
+            }
+
+            currentGame.players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-item';
+                playerDiv.innerHTML = `
+                    <div class="player-name">${player}</div>
+                    <div class="player-stats">خرید: ${currentGame.buyIns[player].toLocaleString()} تومان</div>
+                    <button onclick="removePlayer('${player}')" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; float: left; margin-top: -10px;">حذف</button>
+                `;
+                playersList.appendChild(playerDiv);
+            });
+        }
+
+        function startGame() {
+            if (currentGame.players.length < 2) {
+                showAlert('حداقل 2 بازیکن برای شروع بازی نیاز است', 'danger');
+                return;
+            }
+
+            currentGame.date = document.getElementById('game-date').value;
+            
+            if (!currentGame.date) {
+                showAlert('لطفا تاریخ بازی را انتخاب کنید', 'danger');
+                return;
+            }
+
+            document.getElementById('setup-phase').style.display = 'none';
+            document.getElementById('game-phase').style.display = 'block';
+
+            const currentPlayerSelect = document.getElementById('current-player');
+            currentPlayerSelect.innerHTML = '';
+            currentGame.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player;
+                option.textContent = player;
+                currentPlayerSelect.appendChild(option);
+            });
+
+            updateGameInfo();
+        }
+
+        function addBuyIn() {
+            const player = document.getElementById('current-player').value;
+            const buyIn = parseInt(document.getElementById('buy-in').value) || 0;
+
+            if (buyIn <= 0) {
+                showAlert('مقدار خرید باید بیشتر از صفر باشد', 'danger');
+                return;
+            }
+
+            currentGame.buyIns[player] += buyIn;
+            document.getElementById('buy-in').value = '';
+            
+            updateGameInfo();
+            showAlert(`خرید ${buyIn.toLocaleString()} تومانی برای ${player} ثبت شد`, 'success');
+        }
+
+        function updateGameInfo() {
+            const gameInfo = document.getElementById('current-game-info');
+            gameInfo.innerHTML = '<h4 style="margin: 20px 0 10px 0;">💰 خریدهای فعلی:</h4>';
+
+            currentGame.players.forEach(player => {
+                const buyIn = currentGame.buyIns[player];
+                const div = document.createElement('div');
+                div.className = 'player-item';
+                div.innerHTML = `
+                    <div class="player-name">${player}</div>
+                    <div class="player-stats">کل خرید: ${buyIn.toLocaleString()} تومان</div>
+                `;
+                gameInfo.appendChild(div);
+            });
+
+            const totalBuyIn = Object.values(currentGame.buyIns).reduce((sum, buyIn) => sum + buyIn, 0);
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'summary-box';
+            summaryDiv.innerHTML = `
+                <div class="summary-row">
+                    <span>کل خریدها:</span>
+                    <span>${totalBuyIn.toLocaleString()} تومان</span>
+                </div>
+            `;
+            gameInfo.appendChild(summaryDiv);
+        }
+
+        function finishGame() {
+            const totalBuyIns = Object.values(currentGame.buyIns).reduce((sum, buyIn) => sum + buyIn, 0);
+            
+            if (totalBuyIns === 0) {
+                showAlert('ابتدا خریدهای بازیکنان را ثبت کنید', 'danger');
+                return;
+            }
+
+            document.getElementById('game-phase').style.display = 'none';
+            document.getElementById('finish-phase').style.display = 'block';
+
+            const finishPlayerSelect = document.getElementById('finish-player');
+            finishPlayerSelect.innerHTML = '';
+            currentGame.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player;
+                option.textContent = player;
+                finishPlayerSelect.appendChild(option);
+            });
+
+            updateFinalResults();
+            updateBalanceCheck();
+        }
+
+        function setFinalChips() {
+            const player = document.getElementById('finish-player').value;
+            const finalChips = parseInt(document.getElementById('final-chips').value) || 0;
+
+            if (finalChips < 0) {
+                showAlert('مقدار چیپ نهایی نمی‌تواند منفی باشد', 'danger');
+                return;
+            }
+
+            currentGame.finalChips[player] = finalChips;
+            document.getElementById('final-chips').value = '';
+
+            updateFinalResults();
+            updateBalanceCheck();
+            showAlert(`چیپ نهایی ${finalChips.toLocaleString()} تومانی برای ${player} ثبت شد`, 'success');
+        }
+
+        function updateBalanceCheck() {
+            const balanceDiv = document.getElementById('balance-check');
+            const totalBuyIn = Object.values(currentGame.buyIns).reduce((sum, buyIn) => sum + buyIn, 0);
+            const totalFinalChips = Object.values(currentGame.finalChips).reduce((sum, chips) => sum + chips, 0);
+            const difference = totalBuyIn - totalFinalChips;
+
+            balanceDiv.innerHTML = `
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span>کل خریدها:</span>
+                        <span>${totalBuyIn.toLocaleString()} تومان</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>کل چیپ‌های نهایی:</span>
+                        <span>${totalFinalChips.toLocaleString()} تومان</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>اختلاف:</span>
+                        <span>${difference.toLocaleString()} تومان</span>
+                    </div>
+                </div>
+            `;
+
+            const saveBtn = document.getElementById('save-btn');
+            
+            if (Math.abs(difference) > 1000) {
+                balanceDiv.innerHTML += `
+                    <div class="balance-error">
+                        ❌ خطای جدی در حسابها!
+                        <br>اختلاف: ${difference.toLocaleString()} تومان
+                        <br>لطفا چیپ‌های نهایی را بررسی کنید
+                    </div>
+                `;
+                saveBtn.disabled = true;
+                saveBtn.style.opacity = '0.5';
+                saveBtn.textContent = '❌ امکان ذخیره وجود ندارد';
+            } else if (Math.abs(difference) > 100) {
+                balanceDiv.innerHTML += `
+                    <div class="balance-warning">
+                        ⚠️ هشدار: اختلاف در حسابها
+                        <br>اختلاف: ${difference.toLocaleString()} تومان
+                        <br>آیا مطمئنید؟
+                    </div>
+                `;
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '1';
+                saveBtn.textContent = '💾 ذخیره با هشدار';
+            } else if (difference === 0) {
+                balanceDiv.innerHTML += `
+                    <div class="balance-success">
+                        ✅ حسابها کاملاً متعادل است!
+                    </div>
+                `;
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '1';
+                saveBtn.textContent = '💾 ذخیره بازی';
+            } else {
+                balanceDiv.innerHTML += `
+                    <div class="balance-success">
+                        ✅ حسابها تقریباً متعادل است
+                        <br>اختلاف جزئی: ${difference.toLocaleString()} تومان
+                    </div>
+                `;
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '1';
+                saveBtn.textContent = '💾 ذخیره بازی';
+            }
+        }
+
+        function updateFinalResults() {
+            const resultsDiv = document.getElementById('final-results');
+            resultsDiv.innerHTML = '<h4 style="margin: 20px 0 10px 0;">🏆 نتایج نهایی:</h4>';
+
+            currentGame.players.forEach(player => {
+                const buyIn = currentGame.buyIns[player];
+                const finalChips = currentGame.finalChips[player];
+                const profit = finalChips - buyIn;
+                
+                currentGame.results[player] = profit;
+
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'game-result';
+                resultDiv.innerHTML = `
+                    <div class="player-name">${player}</div>
+                    <div>خرید: ${buyIn.toLocaleString()} تومان</div>
+                    <div>چیپ نهایی: ${finalChips.toLocaleString()} تومان</div>
+                    <div class="${profit >= 0 ? 'profit' : 'loss'}">
+                        ${profit >= 0 ? 'برد' : 'باخت'}: ${Math.abs(profit).toLocaleString()} تومان
+                    </div>
+                `;
+                resultsDiv.appendChild(resultDiv);
+            });
+        }
+
+        function saveGame() {
+            const totalBuyIn = Object.values(currentGame.buyIns).reduce((sum, buyIn) => sum + buyIn, 0);
+            const totalFinalChips = Object.values(currentGame.finalChips).reduce((sum, chips) => sum + chips, 0);
+            const difference = Math.abs(totalBuyIn - totalFinalChips);
+            
+            // بررسی اینکه همه چیپ‌های نهایی ثبت شده باشد
+            const allChipsSet = currentGame.players.every(player => 
+                currentGame.finalChips[player] !== undefined && currentGame.finalChips[player] >= 0
+            );
+            
+            if (!allChipsSet) {
+                showAlert('لطفا چیپ نهایی تمام بازیکنان را ثبت کنید', 'danger');
+                return;
+            }
+
+            // اگر اختلاف زیاد باشد، نیاز به تایید
+            if (difference > 1000) {
+                showAlert('خطای جدی در حسابها! امکان ذخیره وجود ندارد', 'danger');
+                return;
+            }
+
+            if (difference > 100) {
+                showConfirm(`هشدار: اختلاف ${difference.toLocaleString()} تومان در حسابها وجود دارد. آیا مطمئنید که می‌خواهید ذخیره کنید؟`, () => {
+                    performSave();
+                });
+                return;
+            }
+
+            performSave();
+        }
+
+        function performSave() {
+            gameHistory.push({...currentGame});
+            saveToStorage();
+            
+            showAlert('بازی با موفقیت ذخیره شد!', 'success');
+            
+            setTimeout(() => {
+                resetGame();
+            }, 2000);
+        }
+
+        function resetGame() {
+            currentGame = {
+                date: '',
+                players: [],
+                buyIns: {},
+                finalChips: {},
+                results: {}
+            };
+
+            document.getElementById('setup-phase').style.display = 'block';
+            document.getElementById('game-phase').style.display = 'none';
+            document.getElementById('finish-phase').style.display = 'none';
+
+            document.getElementById('game-date').valueAsDate = new Date();
+            document.getElementById('players-list').innerHTML = '';
+            
+            updatePlayersList();
+        }
+
+        function loadHistory() {
+            const historyDiv = document.getElementById('games-history');
+            
+            if (gameHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="text-align: center; color: #666; margin: 40px 0;">هنوز بازی‌ای ثبت نشده است</p>';
+                return;
+            }
+
+            historyDiv.innerHTML = '';
+
+            [...gameHistory].reverse().forEach((game, index) => {
+                const gameDiv = document.createElement('div');
+                gameDiv.className = 'history-item';
+                
+                let playersResults = '';
+                Object.keys(game.results).forEach(player => {
+                    const result = game.results[player];
+                    playersResults += `
+                        <div class="player-result">
+                            <span>${player}</span>
+                            <span class="${result >= 0 ? 'profit' : 'loss'}">
+                                ${result >= 0 ? '+' : ''}${result.toLocaleString()}
+                            </span>
+                        </div>
+                    `;
+                });
+
+                const totalBuyIn = Object.values(game.buyIns).reduce((sum, buyIn) => sum + buyIn, 0);
+
+                gameDiv.innerHTML = `
+                    <div class="history-date">📅 ${new Date(game.date).toLocaleDateString('fa-IR')}</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        کل پول بازی: ${totalBuyIn.toLocaleString()} تومان | ${game.players.length} بازیکن
+                    </div>
+                    ${playersResults}
+                    <button onclick="deleteGame(${gameHistory.length - 1 - index})" 
+                            style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-top: 10px;">
+                        🗑️ حذف
+                    </button>
+                `;
+                
+                historyDiv.appendChild(gameDiv);
+            });
+        }
+
+        function deleteGame(index) {
+            const game = gameHistory[index];
+            const gameDate = new Date(game.date).toLocaleDateString('fa-IR');
+            
+            showConfirm(`آیا مطمئنید که می‌خواهید بازی تاریخ ${gameDate} را حذف کنید؟`, () => {
+                gameHistory.splice(index, 1);
+                saveToStorage();
+                loadHistory();
+                showAlert('بازی حذف شد', 'success');
+            });
+        }
+
+        function loadStats() {
+            const statsDiv = document.getElementById('players-stats');
+            
+            if (gameHistory.length === 0) {
+                statsDiv.innerHTML = '<p style="text-align: center; color: #666; margin: 40px 0;">هنوز بازی‌ای ثبت نشده است</p>';
+                return;
+            }
+
+            const playerStats = {};
+
+            // محاسبه آمار
+            gameHistory.forEach(game => {
+                Object.keys(game.results).forEach(player => {
+                    if (!playerStats[player]) {
+                        playerStats[player] = {
+                            totalGames: 0,
+                            totalProfit: 0,
+                            wins: 0,
+                            losses: 0,
+                            totalBuyIn: 0,
+                            bestGame: 0,
+                            worstGame: 0
+                        };
+                    }
+                    
+                    const result = game.results[player];
+                    playerStats[player].totalGames++;
+                    playerStats[player].totalProfit += result;
+                    playerStats[player].totalBuyIn += game.buyIns[player];
+                    
+                    if (result > 0) {
+                        playerStats[player].wins++;
+                    } else if (result < 0) {
+                        playerStats[player].losses++;
+                    }
+
+                    // بهترین و بدترین بازی
+                    if (result > playerStats[player].bestGame) {
+                        playerStats[player].bestGame = result;
+                    }
+                    if (result < playerStats[player].worstGame) {
+                        playerStats[player].worstGame = result;
+                    }
+                });
+            });
+
+            statsDiv.innerHTML = '';
+
+            // مرتب‌سازی بر اساس سود کل
+            const sortedPlayers = Object.keys(playerStats).sort((a, b) => 
+                playerStats[b].totalProfit - playerStats[a].totalProfit
+            );
+
+            sortedPlayers.forEach(player => {
+                const stats = playerStats[player];
+                const winRate = stats.totalGames > 0 ? (stats.wins / stats.totalGames * 100).toFixed(1) : 0;
+                const avgProfit = stats.totalGames > 0 ? (stats.totalProfit / stats.totalGames) : 0;
+                
+                const statsCard = document.createElement('div');
+                statsCard.className = 'stats-card';
+                statsCard.innerHTML = `
+                    <h4 style="margin-bottom: 15px;">👤 ${player}</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+                        <div>
+                            <div class="stats-number">${stats.totalGames}</div>
+                            <div class="stats-label">تعداد بازی</div>
+                        </div>
+                        <div>
+                            <div class="stats-number ${stats.totalProfit >= 0 ? 'profit' : 'loss'}" style="color: white;">
+                                ${stats.totalProfit >= 0 ? '+' : ''}${stats.totalProfit.toLocaleString()}
+                            </div>
+                            <div class="stats-label">سود/زیان کل</div>
+                        </div>
+                        <div>
+                            <div class="stats-number">${winRate}%</div>
+                            <div class="stats-label">درصد برد</div>
+                        </div>
+                        <div>
+                            <div class="stats-number">${avgProfit >= 0 ? '+' : ''}${Math.round(avgProfit).toLocaleString()}</div>
+                            <div class="stats-label">میانگین سود</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>🏆 بهترین:</span>
+                            <span class="profit">+${stats.bestGame.toLocaleString()}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>💔 بدترین:</span>
+                            <span class="loss">${stats.worstGame.toLocaleString()}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>💰 کل خرید:</span>
+                            <span>${stats.totalBuyIn.toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+                
+                statsDiv.appendChild(statsCard);
+            });
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('pokerGameHistory', JSON.stringify(gameHistory));
+                localStorage.setItem('pokerAllPlayers', JSON.stringify([...allPlayers]));
+            } catch (error) {
+                console.log('Storage not available, keeping in memory');
+            }
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = message;
+            
+            const activeTab = document.querySelector('.page.active');
+            const mainContent = activeTab.querySelector('.main-content') || activeTab;
+            mainContent.insertBefore(alertDiv, mainContent.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 4000);
+        }
+
+        function showConfirm(message, callback) {
+            document.getElementById('modal-message').innerHTML = message;
+            document.getElementById('confirmModal').style.display = 'block';
+            confirmCallback = callback;
+        }
+
+        function confirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+                confirmCallback = null;
+            }
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+            confirmCallback = null;
+        }
+
+        // Event listeners
+        document.getElementById('player-name').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addPlayer();
+            }
+        });
+
+        document.getElementById('buy-in').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addBuyIn();
+            }
+        });
+
+        document.getElementById('final-chips').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                setFinalChips();
+            }
+        });
+
+        // PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHt9KTs=')
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // Load data on startup
+        updatePlayersList();
+    </script>
+</body>
+</html>
