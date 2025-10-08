@@ -84,6 +84,7 @@
             transition: left 0.3s ease;
             z-index: 1000;
             padding: 20px;
+            overflow-y: auto;
         }
 
         .side-menu.open {
@@ -224,32 +225,128 @@
             margin: 2px;
         }
 
-        .player-item {
+        .player-row {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 10px;
             border-right: 4px solid #2a5298;
-            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
-        .player-controls {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: flex;
-            gap: 5px;
+        .player-row.active {
+            background: #e8f5e9;
+            border-right-color: #28a745;
+        }
+
+        .player-info {
+            flex: 1;
         }
 
         .player-name {
             font-weight: bold;
+            font-size: 16px;
             margin-bottom: 5px;
-            padding-left: 80px;
         }
 
         .player-stats {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
+        }
+
+        .buy-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .buy-display {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 18px;
+            min-width: 60px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+
+        .control-btn {
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .remove-btn {
+            background: #dc3545;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .player-selector {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .player-selector h4 {
+            margin-bottom: 10px;
+            color: #2a5298;
+        }
+
+        .player-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+        }
+
+        .player-chip {
+            background: white;
+            border: 2px solid #2a5298;
+            color: #2a5298;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .player-chip:hover {
+            background: #2a5298;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .player-chip.selected {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
         }
 
         .game-result {
@@ -333,6 +430,12 @@
             background: #fff3cd;
             color: #856404;
             border: 1px solid #ffeaa7;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
         }
 
         .balance-warning {
@@ -426,43 +529,6 @@
             font-size: 14px;
         }
 
-        .quick-actions {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .quick-actions h4 {
-            margin-bottom: 10px;
-            color: #2a5298;
-        }
-
-        .player-quick-select {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .player-chip {
-            background: #2a5298;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            border: none;
-            transition: all 0.3s;
-        }
-
-        .player-chip:hover {
-            background: #1e3c72;
-        }
-
-        .player-chip.selected {
-            background: #28a745;
-        }
-
         .chip-info {
             background: #e7f3ff;
             padding: 10px;
@@ -470,6 +536,39 @@
             margin-bottom: 15px;
             border-left: 4px solid #2a5298;
             font-size: 14px;
+        }
+
+        .auto-save-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1001;
+            display: none;
+            animation: fadeInOut 2s;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .saved-game-banner {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .saved-game-banner button {
+            margin-top: 10px;
         }
 
         @media (max-width: 480px) {
@@ -480,10 +579,21 @@
             .header h1 {
                 font-size: 20px;
             }
+
+            .buy-controls {
+                gap: 5px;
+            }
+
+            .control-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="auto-save-indicator" id="autoSaveIndicator">💾 ذخیره خودکار...</div>
     <div class="menu-overlay" onclick="closeMenu()"></div>
     
     <div class="side-menu" id="sideMenu">
@@ -491,9 +601,10 @@
             <h3>📋 منوی اصلی</h3>
             <button class="menu-close" onclick="closeMenu()">✕</button>
         </div>
+        <button class="menu-item" onclick="startNewGame()">🎮 بازی جدید</button>
+        <button class="menu-item" onclick="showPage('players')">👥 مدیریت بازیکنان</button>
         <button class="menu-item" onclick="showPage('history')">📜 تاریخچه بازی‌ها</button>
         <button class="menu-item" onclick="showPage('stats')">📊 آمار بازیکنان</button>
-        <button class="menu-item" onclick="showPage('main')">🎰 صفحه اصلی</button>
     </div>
 
     <div class="container">
@@ -503,102 +614,74 @@
             <p>مدیریت کامل حسابداری بازی‌های پوکر</p>
         </div>
 
-        <!-- صفحه اصلی -->
-        <div id="main" class="page active">
+        <!-- صفحه بازی -->
+        <div id="game" class="page active">
             <div class="main-content">
-                <div id="setup-phase">
-                    <h3 style="margin-bottom: 15px;">📋 تنظیمات بازی</h3>
-                    
-                    <div class="form-group">
-                        <label>تاریخ بازی (شمسی):</label>
-                        <input type="text" id="game-date" placeholder="مثال: 1403/09/06" readonly onclick="showDatePicker()">
-                    </div>
+                <div id="saved-game-notice"></div>
 
-                    <div class="form-group">
-                        <label>نام بازیکن:</label>
-                        <input type="text" id="player-name" placeholder="نام بازیکن را وارد کنید">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="addPlayer()">➕ اضافه کردن بازیکن</button>
-
-                    <div id="players-list"></div>
-
-                    <button class="btn btn-success" onclick="startGame()" style="margin-top: 20px;">🎮 شروع بازی</button>
+                <div class="form-group">
+                    <label>تاریخ بازی (شمسی):</label>
+                    <input type="text" id="game-date" placeholder="مثال: 1403/09/06" readonly onclick="showDatePicker()">
                 </div>
 
-                <div id="game-phase" style="display: none;">
-                    <h3 style="margin-bottom: 15px;">🎯 مرحله بازی</h3>
-                    
-                    <div class="chip-info">
-                        💰 هر خرید = 500 ژتون = 100,000 تومان
-                    </div>
-
-                    <div class="quick-actions">
-                        <h4>انتخاب سریع بازیکن:</h4>
-                        <div class="player-quick-select" id="player-chips"></div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>تعداد خرید:</label>
-                        <input type="number" id="buy-count" placeholder="تعداد خرید (هر خرید 500 ژتون)" min="1" step="0.5">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="addBuyIn()">💰 ثبت خرید</button>
-
-                    <button class="btn btn-secondary" onclick="showAddPlayerInGame()" style="margin-top: 10px;">👤 اضافه کردن بازیکن جدید</button>
-
-                    <div id="add-player-in-game" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                        <div class="form-group">
-                            <label>نام بازیکن جدید:</label>
-                            <input type="text" id="new-player-name" placeholder="نام بازیکن جدید">
-                        </div>
-                        <button class="btn btn-primary" onclick="addPlayerInGame()">➕ اضافه کردن</button>
-                        <button class="btn btn-secondary" onclick="hideAddPlayerInGame()">لغو</button>
-                    </div>
-
-                    <div id="current-game-info"></div>
-
-                    <button class="btn btn-success" onclick="finishGame()" style="margin-top: 20px;">🏁 پایان بازی</button>
+                <div class="chip-info">
+                    💰 هر خرید = 500 ژتون = 100,000 تومان
                 </div>
 
-                <div id="finish-phase" style="display: none;">
-                    <h3 style="margin-bottom: 15px;">🏆 پایان بازی</h3>
+                <div class="player-selector">
+                    <h4>🎯 انتخاب بازیکنان:</h4>
+                    <div class="player-chips-grid" id="availablePlayers"></div>
+                </div>
+
+                <div id="active-players">
+                    <h4 style="margin-bottom: 10px; color: #2a5298;">بازیکنان فعال:</h4>
+                </div>
+
+                <div id="game-summary"></div>
+
+                <div id="finish-section" style="display: none;">
+                    <h3 style="margin: 20px 0 15px 0;">🏁 پایان بازی</h3>
                     
                     <div class="chip-info">
-                        🎲 هر 500 ژتون = 100,000 تومان
+                        🎲 تعداد ژتون نهایی هر بازیکن را وارد کنید
                     </div>
 
-                    <div class="quick-actions">
-                        <h4>انتخاب سریع بازیکن:</h4>
-                        <div class="player-quick-select" id="finish-player-chips"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>تعداد ژتون نهایی:</label>
-                        <input type="number" id="final-tokens" placeholder="تعداد ژتون‌های نهایی" min="0" step="50">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="setFinalTokens()">🎲 ثبت ژتون نهایی</button>
+                    <div id="final-tokens-input"></div>
 
                     <div id="balance-check"></div>
                     <div id="final-results"></div>
 
                     <button class="btn btn-success" onclick="saveGame()" id="save-btn">💾 ذخیره بازی</button>
-                    <button class="btn btn-secondary" onclick="resetGame()">🔄 بازی جدید</button>
                 </div>
+
+                <button class="btn btn-success" onclick="showFinishSection()" id="finish-btn" style="margin-top: 20px;">🏁 پایان بازی</button>
             </div>
+        </div>
+
+        <!-- صفحه مدیریت بازیکنان -->
+        <div id="players" class="page">
+            <button class="btn btn-back" onclick="showPage('game')">← برگشت</button>
+            <h3 style="margin-bottom: 15px;">👥 مدیریت بازیکنان</h3>
+            
+            <div class="form-group">
+                <label>نام بازیکن جدید:</label>
+                <input type="text" id="new-player-input" placeholder="نام بازیکن را وارد کنید">
+            </div>
+            <button class="btn btn-primary" onclick="addNewPlayer()">➕ اضافه کردن بازیکن</button>
+
+            <div id="all-players-list"></div>
         </div>
 
         <!-- صفحه تاریخچه -->
         <div id="history" class="page">
-            <button class="btn btn-back" onclick="showPage('main')">← برگشت</button>
+            <button class="btn btn-back" onclick="showPage('game')">← برگشت</button>
             <h3 style="margin-bottom: 15px;">📜 تاریخچه بازی‌ها</h3>
             <div id="games-history"></div>
         </div>
 
         <!-- صفحه آمار -->
         <div id="stats" class="page">
-            <button class="btn btn-back" onclick="showPage('main')">← برگشت</button>
+            <button class="btn btn-back" onclick="showPage('game')">← برگشت</button>
             <h3 style="margin-bottom: 15px;">📊 آمار بازیکنان</h3>
             <div id="players-stats"></div>
         </div>
@@ -647,22 +730,84 @@
             results: {}
         };
 
+        let allPlayersList = JSON.parse(localStorage.getItem('allPlayersList') || '[]');
         let gameHistory = JSON.parse(localStorage.getItem('pokerGameHistory') || '[]');
-        let allPlayers = new Set(JSON.parse(localStorage.getItem('pokerAllPlayers') || '[]'));
         let confirmCallback = null;
-        let selectedPlayer = null;
-        let finishSelectedPlayer = null;
+        let autoSaveInterval = null;
 
         const TOKENS_PER_BUY = 500;
-        const PRICE_PER_BUY = 100000; // 100,000 تومان
+        const PRICE_PER_BUY = 100000;
 
         const persianMonths = [
             'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
             'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
         ];
 
-        // تنظیم تاریخ شمسی پیش‌فرض
+        // Initialize
         setDefaultPersianDate();
+        loadSavedGame();
+        renderAvailablePlayers();
+        startAutoSave();
+
+        function startAutoSave() {
+            autoSaveInterval = setInterval(() => {
+                if (currentGame.players.length > 0) {
+                    saveCurrentGame();
+                    showAutoSaveIndicator();
+                }
+            }, 10000); // هر 10 ثانیه
+        }
+
+        function saveCurrentGame() {
+            localStorage.setItem('currentGame', JSON.stringify(currentGame));
+        }
+
+        function loadSavedGame() {
+            const saved = localStorage.getItem('currentGame');
+            if (saved) {
+                const savedGame = JSON.parse(saved);
+                if (savedGame.players && savedGame.players.length > 0) {
+                    const notice = document.getElementById('saved-game-notice');
+                    notice.innerHTML = `
+                        <div class="saved-game-banner">
+                            <strong>💾 بازی ذخیره شده پیدا شد!</strong>
+                            <br><small>تاریخ: ${savedGame.date || 'نامشخص'}</small>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="btn btn-success" onclick="restoreSavedGame()" style="flex: 1;">بازگردانی</button>
+                                <button class="btn btn-danger" onclick="clearSavedGame()" style="flex: 1;">حذف</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function restoreSavedGame() {
+            const saved = localStorage.getItem('currentGame');
+            if (saved) {
+                currentGame = JSON.parse(saved);
+                document.getElementById('game-date').value = currentGame.date;
+                document.getElementById('saved-game-notice').innerHTML = '';
+                renderActivePlayers();
+                renderAvailablePlayers();
+                updateGameSummary();
+                showAlert('بازی بازگردانی شد!', 'success');
+            }
+        }
+
+        function clearSavedGame() {
+            localStorage.removeItem('currentGame');
+            document.getElementById('saved-game-notice').innerHTML = '';
+            showAlert('بازی ذخیره شده حذف شد', 'info');
+        }
+
+        function showAutoSaveIndicator() {
+            const indicator = document.getElementById('autoSaveIndicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
 
         function setDefaultPersianDate() {
             const today = new Date();
@@ -671,12 +816,10 @@
         }
 
         function gregorianToPersian(gregorianDate) {
-            // ساده‌سازی تبدیل تاریخ - در محیط واقعی از کتابخانه دقیق‌تری استفاده کنید
             const g_y = gregorianDate.getFullYear();
             const g_m = gregorianDate.getMonth() + 1;
             const g_d = gregorianDate.getDate();
             
-            // تخمین ساده برای تبدیل
             let p_y = g_y - 621;
             if (g_m < 3 || (g_m === 3 && g_d < 21)) {
                 p_y--;
@@ -694,7 +837,6 @@
             const monthSelect = document.getElementById('month-select');
             const daySelect = document.getElementById('day-select');
             
-            // پر کردن سال‌ها
             yearSelect.innerHTML = '';
             for (let year = 1400; year <= 1410; year++) {
                 const option = document.createElement('option');
@@ -704,7 +846,6 @@
                 yearSelect.appendChild(option);
             }
             
-            // پر کردن ماه‌ها
             monthSelect.innerHTML = '';
             persianMonths.forEach((month, index) => {
                 const option = document.createElement('option');
@@ -713,9 +854,7 @@
                 monthSelect.appendChild(option);
             });
             
-            // پر کردن روزها
             updateDaySelect();
-            
             modal.style.display = 'block';
         }
 
@@ -736,6 +875,8 @@
             const day = document.getElementById('day-select').value.padStart(2, '0');
             
             document.getElementById('game-date').value = `${year}/${month}/${day}`;
+            currentGame.date = `${year}/${month}/${day}`;
+            saveCurrentGame();
             closeDateModal();
         }
 
@@ -743,115 +884,159 @@
             document.getElementById('dateModal').style.display = 'none';
         }
 
-        // باقی توابع...
         document.getElementById('month-select').addEventListener('change', updateDaySelect);
 
-        function openMenu() {
-            document.getElementById('sideMenu').classList.add('open');
-            document.querySelector('.menu-overlay').classList.add('show');
-        }
+        function renderAvailablePlayers() {
+            const container = document.getElementById('availablePlayers');
+            container.innerHTML = '';
 
-        function closeMenu() {
-            document.getElementById('sideMenu').classList.remove('open');
-            document.querySelector('.menu-overlay').classList.remove('show');
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            closeMenu();
-
-            if (pageId === 'history') {
-                loadHistory();
-            } else if (pageId === 'stats') {
-                loadStats();
-            }
-        }
-
-        function addPlayer() {
-            const playerName = document.getElementById('player-name').value.trim();
-            
-            if (!playerName) {
-                showAlert('لطفا نام بازیکن را وارد کنید', 'danger');
+            if (allPlayersList.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">هنوز بازیکنی تعریف نشده<br><small>از منو > مدیریت بازیکنان بازیکن اضافه کنید</small></p>';
                 return;
             }
 
+            allPlayersList.forEach(player => {
+                const chip = document.createElement('button');
+                chip.className = 'player-chip';
+                chip.textContent = player;
+                chip.onclick = () => selectPlayerForGame(player);
+                
+                if (currentGame.players.includes(player)) {
+                    chip.classList.add('selected');
+                }
+                
+                container.appendChild(chip);
+            });
+        }
+
+        function selectPlayerForGame(playerName) {
             if (currentGame.players.includes(playerName)) {
-                showAlert('این بازیکن قبلا اضافه شده است', 'danger');
+                showAlert('این بازیکن قبلاً به بازی اضافه شده است', 'warning');
                 return;
             }
 
             currentGame.players.push(playerName);
-            allPlayers.add(playerName);
-            currentGame.buyIns[playerName] = 0;
+            currentGame.buyIns[playerName] = TOKENS_PER_BUY; // یک خرید پیش‌فرض
             currentGame.finalTokens[playerName] = 0;
 
-            document.getElementById('player-name').value = '';
-            updatePlayersList();
-            saveToStorage();
+            renderAvailablePlayers();
+            renderActivePlayers();
+            updateGameSummary();
+            saveCurrentGame();
+            showAlert(`${playerName} با 1 خرید به بازی اضافه شد`, 'success');
         }
 
-        function movePlayerUp(playerName) {
-            const index = currentGame.players.indexOf(playerName);
-            if (index > 0) {
-                [currentGame.players[index], currentGame.players[index - 1]] = 
-                [currentGame.players[index - 1], currentGame.players[index]];
-                updatePlayersList();
+        function renderActivePlayers() {
+            const container = document.getElementById('active-players');
+            
+            if (currentGame.players.length === 0) {
+                container.innerHTML = '<h4 style="margin-bottom: 10px; color: #2a5298;">بازیکنان فعال:</h4><p style="text-align: center; color: #666; padding: 20px;">هنوز بازیکنی انتخاب نشده</p>';
+                return;
+            }
+
+            let html = '<h4 style="margin-bottom: 10px; color: #2a5298;">بازیکنان فعال:</h4>';
+            
+            currentGame.players.forEach(player => {
+                const tokens = currentGame.buyIns[player] || 0;
+                const buyCount = tokens / TOKENS_PER_BUY;
+                const money = (tokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
+
+                html += `
+                    <div class="player-row active">
+                        <div class="player-info">
+                            <div class="player-name">${player}</div>
+                            <div class="player-stats">${tokens} ژتون (${money.toLocaleString()} تومان)</div>
+                        </div>
+                        <div class="buy-controls">
+                            <button class="control-btn" onclick="decreaseBuy('${player}')">−</button>
+                            <div class="buy-display">${buyCount}</div>
+                            <button class="control-btn" onclick="increaseBuy('${player}')">+</button>
+                            <button class="control-btn remove-btn" onclick="removePlayerFromGame('${player}')">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function increaseBuy(playerName) {
+            currentGame.buyIns[playerName] = (currentGame.buyIns[playerName] || 0) + TOKENS_PER_BUY;
+            renderActivePlayers();
+            updateGameSummary();
+            saveCurrentGame();
+        }
+
+        function decreaseBuy(playerName) {
+            const currentTokens = currentGame.buyIns[playerName] || 0;
+            if (currentTokens > TOKENS_PER_BUY) {
+                currentGame.buyIns[playerName] = currentTokens - TOKENS_PER_BUY;
+                renderActivePlayers();
+                updateGameSummary();
+                saveCurrentGame();
+            } else {
+                showAlert('حداقل باید یک خرید داشته باشد', 'warning');
             }
         }
 
-        function movePlayerDown(playerName) {
-            const index = currentGame.players.indexOf(playerName);
-            if (index < currentGame.players.length - 1) {
-                [currentGame.players[index], currentGame.players[index + 1]] = 
-                [currentGame.players[index + 1], currentGame.players[index]];
-                updatePlayersList();
-            }
-        }
-
-        function removePlayer(playerName) {
-            showConfirm(`آیا مطمئنید که می‌خواهید "${playerName}" را حذف کنید؟`, () => {
+        function removePlayerFromGame(playerName) {
+            showConfirm(`آیا مطمئنید که می‌خواهید "${playerName}" را از بازی حذف کنید؟`, () => {
                 const index = currentGame.players.indexOf(playerName);
                 if (index > -1) {
                     currentGame.players.splice(index, 1);
                     delete currentGame.buyIns[playerName];
                     delete currentGame.finalTokens[playerName];
-                    updatePlayersList();
+                    renderAvailablePlayers();
+                    renderActivePlayers();
+                    updateGameSummary();
+                    saveCurrentGame();
                 }
             });
         }
 
-        function updatePlayersList() {
-            const playersList = document.getElementById('players-list');
-            playersList.innerHTML = '';
-
+        function updateGameSummary() {
+            const container = document.getElementById('game-summary');
+            
             if (currentGame.players.length === 0) {
-                playersList.innerHTML = '<p style="text-align: center; color: #666; margin: 20px 0;">هنوز بازیکنی اضافه نشده</p>';
+                container.innerHTML = '';
+                document.getElementById('finish-btn').style.display = 'none';
                 return;
             }
 
-            currentGame.players.forEach((player, index) => {
-                const playerDiv = document.createElement('div');
-                playerDiv.className = 'player-item';
-                
-                const totalMoney = (currentGame.buyIns[player] / TOKENS_PER_BUY) * PRICE_PER_BUY;
-                
-                playerDiv.innerHTML = `
-                    <div class="player-controls">
-                        ${index > 0 ? `<button class="btn btn-secondary btn-small" onclick="movePlayerUp('${player}')">↑</button>` : ''}
-                        ${index < currentGame.players.length - 1 ? `<button class="btn btn-secondary btn-small" onclick="movePlayerDown('${player}')">↓</button>` : ''}
-                        <button class="btn btn-danger btn-small" onclick="removePlayer('${player}')">✕</button>
-                    </div>
-                    <div class="player-name">${player}</div>
-                    <div class="player-stats">خرید: ${currentGame.buyIns[player]} ژتون (${totalMoney.toLocaleString()} تومان)</div>
-                `;
-                playersList.appendChild(playerDiv);
+            document.getElementById('finish-btn').style.display = 'block';
+
+            let totalTokens = 0;
+            let totalMoney = 0;
+
+            currentGame.players.forEach(player => {
+                const tokens = currentGame.buyIns[player] || 0;
+                const money = (tokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
+                totalTokens += tokens;
+                totalMoney += money;
             });
+
+            container.innerHTML = `
+                <div class="summary-box">
+                    <h4 style="margin-bottom: 10px;">📊 خلاصه بازی</h4>
+                    <div class="summary-row">
+                        <span>تعداد بازیکنان:</span>
+                        <span>${currentGame.players.length} نفر</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>کل ژتون‌ها:</span>
+                        <span>${totalTokens.toLocaleString()} ژتون</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>کل پول:</span>
+                        <span style="color: #2a5298;">${totalMoney.toLocaleString()} تومان</span>
+                    </div>
+                </div>
+            `;
         }
 
-        function startGame() {
+        function showFinishSection() {
             if (currentGame.players.length < 2) {
-                showAlert('حداقل 2 بازیکن برای شروع بازی نیاز است', 'danger');
+                showAlert('حداقل 2 بازیکن برای پایان بازی نیاز است', 'danger');
                 return;
             }
 
@@ -862,192 +1047,48 @@
                 return;
             }
 
-            document.getElementById('setup-phase').style.display = 'none';
-            document.getElementById('game-phase').style.display = 'block';
-
-            updatePlayerChips();
-            updateGameInfo();
-        }
-
-        function updatePlayerChips() {
-            const playerChips = document.getElementById('player-chips');
-            playerChips.innerHTML = '';
+            document.getElementById('finish-section').style.display = 'block';
+            document.getElementById('finish-btn').style.display = 'none';
             
-            currentGame.players.forEach(player => {
-                const chip = document.createElement('button');
-                chip.className = 'player-chip';
-                chip.textContent = player;
-                chip.onclick = () => selectPlayer(player);
-                playerChips.appendChild(chip);
-            });
+            renderFinalTokensInput();
+            window.scrollTo(0, document.body.scrollHeight);
         }
 
-        function selectPlayer(playerName) {
-            selectedPlayer = playerName;
-            document.querySelectorAll('#player-chips .player-chip').forEach(chip => {
-                chip.classList.remove('selected');
-                if (chip.textContent === playerName) {
-                    chip.classList.add('selected');
-                }
-            });
-        }
-
-        function addBuyIn() {
-            if (!selectedPlayer) {
-                showAlert('لطفا ابتدا یک بازیکن انتخاب کنید', 'danger');
-                return;
-            }
-
-            const buyCount = parseFloat(document.getElementById('buy-count').value) || 0;
-
-            if (buyCount <= 0) {
-                showAlert('تعداد خرید باید بیشتر از صفر باشد', 'danger');
-                return;
-            }
-
-            const tokensToAdd = buyCount * TOKENS_PER_BUY;
-            currentGame.buyIns[selectedPlayer] = (currentGame.buyIns[selectedPlayer] || 0) + tokensToAdd;
-            
-            document.getElementById('buy-count').value = '';
-            
-            const moneyAmount = buyCount * PRICE_PER_BUY;
-            updateGameInfo();
-            showAlert(`خرید ${buyCount} عدد (${tokensToAdd} ژتون - ${moneyAmount.toLocaleString()} تومان) برای ${selectedPlayer} ثبت شد`, 'success');
-        }
-
-        function showAddPlayerInGame() {
-            document.getElementById('add-player-in-game').style.display = 'block';
-        }
-
-        function hideAddPlayerInGame() {
-            document.getElementById('add-player-in-game').style.display = 'none';
-            document.getElementById('new-player-name').value = '';
-        }
-
-        function addPlayerInGame() {
-            const playerName = document.getElementById('new-player-name').value.trim();
-            
-            if (!playerName) {
-                showAlert('لطفا نام بازیکن را وارد کنید', 'danger');
-                return;
-            }
-
-            if (currentGame.players.includes(playerName)) {
-                showAlert('این بازیکن قبلا اضافه شده است', 'danger');
-                return;
-            }
-
-            currentGame.players.push(playerName);
-            allPlayers.add(playerName);
-            currentGame.buyIns[playerName] = 0;
-            currentGame.finalTokens[playerName] = 0;
-
-            hideAddPlayerInGame();
-            updatePlayerChips();
-            updateGameInfo();
-            saveToStorage();
-            
-            showAlert(`${playerName} به بازی اضافه شد`, 'success');
-        }
-
-        function updateGameInfo() {
-            const gameInfo = document.getElementById('current-game-info');
-            gameInfo.innerHTML = '<h4 style="margin: 20px 0 10px 0;">💰 خریدهای فعلی:</h4>';
-
-            let totalTokens = 0;
-            let totalMoney = 0;
+        function renderFinalTokensInput() {
+            const container = document.getElementById('final-tokens-input');
+            let html = '';
 
             currentGame.players.forEach(player => {
-                const tokens = currentGame.buyIns[player] || 0;
-                const money = (tokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
-                totalTokens += tokens;
-                totalMoney += money;
-
-                const div = document.createElement('div');
-                div.className = 'player-item';
-                div.innerHTML = `
-                    <div class="player-name">${player}</div>
-                    <div class="player-stats">
-                        ${tokens} ژتون (${money.toLocaleString()} تومان)
+                const finalTokens = currentGame.finalTokens[player] || 0;
+                html += `
+                    <div class="player-row">
+                        <div class="player-info">
+                            <div class="player-name">${player}</div>
+                            <div class="player-stats">ژتون نهایی</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="number" 
+                                   id="final-${player}" 
+                                   value="${finalTokens || ''}" 
+                                   placeholder="0" 
+                                   min="0" 
+                                   step="50"
+                                   onchange="updateFinalToken('${player}', this.value)"
+                                   style="width: 100px; padding: 8px; border-radius: 6px; border: 2px solid #dee2e6; text-align: center; font-weight: bold;">
+                        </div>
                     </div>
                 `;
-                gameInfo.appendChild(div);
             });
 
-            const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'summary-box';
-            summaryDiv.innerHTML = `
-                <div class="summary-row">
-                    <span>کل ژتون‌ها:</span>
-                    <span>${totalTokens.toLocaleString()} ژتون</span>
-                </div>
-                <div class="summary-row">
-                    <span>کل پول:</span>
-                    <span>${totalMoney.toLocaleString()} تومان</span>
-                </div>
-            `;
-            gameInfo.appendChild(summaryDiv);
+            container.innerHTML = html;
         }
 
-        function finishGame() {
-            const totalTokens = Object.values(currentGame.buyIns).reduce((sum, tokens) => sum + tokens, 0);
-            
-            if (totalTokens === 0) {
-                showAlert('ابتدا خریدهای بازیکنان را ثبت کنید', 'danger');
-                return;
-            }
-
-            document.getElementById('game-phase').style.display = 'none';
-            document.getElementById('finish-phase').style.display = 'block';
-
-            updateFinishPlayerChips();
-            updateFinalResults();
-        }
-
-        function updateFinishPlayerChips() {
-            const finishPlayerChips = document.getElementById('finish-player-chips');
-            finishPlayerChips.innerHTML = '';
-            
-            currentGame.players.forEach(player => {
-                const chip = document.createElement('button');
-                chip.className = 'player-chip';
-                chip.textContent = player;
-                chip.onclick = () => selectFinishPlayer(player);
-                finishPlayerChips.appendChild(chip);
-            });
-        }
-
-        function selectFinishPlayer(playerName) {
-            finishSelectedPlayer = playerName;
-            document.querySelectorAll('#finish-player-chips .player-chip').forEach(chip => {
-                chip.classList.remove('selected');
-                if (chip.textContent === playerName) {
-                    chip.classList.add('selected');
-                }
-            });
-        }
-
-        function setFinalTokens() {
-            if (!finishSelectedPlayer) {
-                showAlert('لطفا ابتدا یک بازیکن انتخاب کنید', 'danger');
-                return;
-            }
-
-            const finalTokens = parseInt(document.getElementById('final-tokens').value) || 0;
-
-            if (finalTokens < 0) {
-                showAlert('تعداد ژتون نهایی نمی‌تواند منفی باشد', 'danger');
-                return;
-            }
-
-            currentGame.finalTokens[finishSelectedPlayer] = finalTokens;
-            document.getElementById('final-tokens').value = '';
-
-            updateFinalResults();
+        function updateFinalToken(playerName, value) {
+            const tokens = parseInt(value) || 0;
+            currentGame.finalTokens[playerName] = tokens;
             updateBalanceCheck();
-            
-            const finalMoney = (finalTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
-            showAlert(`ژتون نهایی ${finalTokens} عدد (${finalMoney.toLocaleString()} تومان) برای ${finishSelectedPlayer} ثبت شد`, 'success');
+            updateFinalResults();
+            saveCurrentGame();
         }
 
         function updateBalanceCheck() {
@@ -1062,6 +1103,7 @@
 
             balanceDiv.innerHTML = `
                 <div class="summary-box">
+                    <h4 style="margin-bottom: 10px;">⚖️ بررسی تعادل</h4>
                     <div class="summary-row">
                         <span>کل خریدها:</span>
                         <span>${totalBuyTokens} ژتون (${totalBuyMoney.toLocaleString()} تومان)</span>
@@ -1072,14 +1114,16 @@
                     </div>
                     <div class="summary-row">
                         <span>اختلاف:</span>
-                        <span>${tokenDifference} ژتون (${moneyDifference.toLocaleString()} تومان)</span>
+                        <span style="color: ${Math.abs(moneyDifference) > 10000 ? '#dc3545' : '#28a745'}">
+                            ${tokenDifference} ژتون (${moneyDifference.toLocaleString()} تومان)
+                        </span>
                     </div>
                 </div>
             `;
 
             const saveBtn = document.getElementById('save-btn');
             
-            if (Math.abs(moneyDifference) > 50000) { // اختلاف بیش از 50 هزار تومان
+            if (Math.abs(moneyDifference) > 50000) {
                 balanceDiv.innerHTML += `
                     <div class="balance-error">
                         ❌ خطای جدی در حسابها!
@@ -1089,18 +1133,15 @@
                 `;
                 saveBtn.disabled = true;
                 saveBtn.style.opacity = '0.5';
-                saveBtn.textContent = '❌ امکان ذخیره وجود ندارد';
-            } else if (Math.abs(moneyDifference) > 10000) { // اختلاف 10-50 هزار تومان
+            } else if (Math.abs(moneyDifference) > 10000) {
                 balanceDiv.innerHTML += `
                     <div class="balance-warning">
                         ⚠️ هشدار: اختلاف در حسابها
                         <br>اختلاف: ${tokenDifference} ژتون (${moneyDifference.toLocaleString()} تومان)
-                        <br>آیا مطمئنید؟
                     </div>
                 `;
                 saveBtn.disabled = false;
                 saveBtn.style.opacity = '1';
-                saveBtn.textContent = '💾 ذخیره با هشدار';
             } else if (moneyDifference === 0) {
                 balanceDiv.innerHTML += `
                     <div class="balance-success">
@@ -1109,7 +1150,6 @@
                 `;
                 saveBtn.disabled = false;
                 saveBtn.style.opacity = '1';
-                saveBtn.textContent = '💾 ذخیره بازی';
             } else {
                 balanceDiv.innerHTML += `
                     <div class="balance-success">
@@ -1119,7 +1159,6 @@
                 `;
                 saveBtn.disabled = false;
                 saveBtn.style.opacity = '1';
-                saveBtn.textContent = '💾 ذخیره بازی';
             }
         }
 
@@ -1127,56 +1166,64 @@
             const resultsDiv = document.getElementById('final-results');
             resultsDiv.innerHTML = '<h4 style="margin: 20px 0 10px 0;">🏆 نتایج نهایی:</h4>';
 
+            let hasResults = false;
+
             currentGame.players.forEach(player => {
                 const buyTokens = currentGame.buyIns[player] || 0;
                 const finalTokens = currentGame.finalTokens[player] || 0;
-                const tokenProfit = finalTokens - buyTokens;
                 
-                const buyMoney = (buyTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
-                const finalMoney = (finalTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
-                const moneyProfit = finalMoney - buyMoney;
-                
-                currentGame.results[player] = moneyProfit;
+                if (finalTokens > 0) {
+                    hasResults = true;
+                    const tokenProfit = finalTokens - buyTokens;
+                    
+                    const buyMoney = (buyTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
+                    const finalMoney = (finalTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
+                    const moneyProfit = finalMoney - buyMoney;
+                    
+                    currentGame.results[player] = moneyProfit;
 
-                const resultDiv = document.createElement('div');
-                resultDiv.className = 'game-result';
-                resultDiv.innerHTML = `
-                    <div class="player-name">${player}</div>
-                    <div>خرید: ${buyTokens} ژتون (${buyMoney.toLocaleString()} تومان)</div>
-                    <div>ژتون نهایی: ${finalTokens} ژتون (${finalMoney.toLocaleString()} تومان)</div>
-                    <div class="${moneyProfit >= 0 ? 'profit' : 'loss'}">
-                        ${moneyProfit >= 0 ? 'برد' : 'باخت'}: ${Math.abs(moneyProfit).toLocaleString()} تومان
-                    </div>
-                `;
-                resultsDiv.appendChild(resultDiv);
+                    const resultDiv = document.createElement('div');
+                    resultDiv.className = 'game-result';
+                    resultDiv.innerHTML = `
+                        <div class="player-name">${player}</div>
+                        <div>خرید: ${buyTokens} ژتون (${buyMoney.toLocaleString()} تومان)</div>
+                        <div>ژتون نهایی: ${finalTokens} ژتون (${finalMoney.toLocaleString()} تومان)</div>
+                        <div class="${moneyProfit >= 0 ? 'profit' : 'loss'}" style="font-size: 18px; margin-top: 5px;">
+                            ${moneyProfit >= 0 ? '🎉 برد' : '💔 باخت'}: ${Math.abs(moneyProfit).toLocaleString()} تومان
+                        </div>
+                    `;
+                    resultsDiv.appendChild(resultDiv);
+                }
             });
+
+            if (!hasResults) {
+                resultsDiv.innerHTML += '<p style="text-align: center; color: #666; padding: 20px;">هنوز ژتون نهایی ثبت نشده</p>';
+            }
         }
 
         function saveGame() {
+            const allTokensSet = currentGame.players.every(player => 
+                currentGame.finalTokens[player] > 0
+            );
+            
+            if (!allTokensSet) {
+                showAlert('لطفا ژتون نهایی تمام بازیکنان را وارد کنید', 'danger');
+                return;
+            }
+
             const totalBuyTokens = Object.values(currentGame.buyIns).reduce((sum, tokens) => sum + tokens, 0);
             const totalFinalTokens = Object.values(currentGame.finalTokens).reduce((sum, tokens) => sum + tokens, 0);
             const totalBuyMoney = (totalBuyTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
             const totalFinalMoney = (totalFinalTokens / TOKENS_PER_BUY) * PRICE_PER_BUY;
             const moneyDifference = Math.abs(totalBuyMoney - totalFinalMoney);
-            
-            // بررسی اینکه همه ژتون‌های نهایی ثبت شده باشد
-            const allTokensSet = currentGame.players.every(player => 
-                currentGame.finalTokens[player] !== undefined && currentGame.finalTokens[player] >= 0
-            );
-            
-            if (!allTokensSet) {
-                showAlert('لطفا ژتون نهایی تمام بازیکنان را ثبت کنید', 'danger');
-                return;
-            }
 
-            // اگر اختلاف زیاد باشد، نیاز به تایید
             if (moneyDifference > 50000) {
                 showAlert('خطای جدی در حسابها! امکان ذخیره وجود ندارد', 'danger');
                 return;
             }
 
             if (moneyDifference > 10000) {
-                showConfirm(`هشدار: اختلاف ${moneyDifference.toLocaleString()} تومان در حسابها وجود دارد. آیا مطمئنید که می‌خواهید ذخیره کنید؟`, () => {
+                showConfirm(`هشدار: اختلاف ${moneyDifference.toLocaleString()} تومان در حسابها وجود دارد. آیا مطمئنید؟`, () => {
                     performSave();
                 });
                 return;
@@ -1186,25 +1233,24 @@
         }
 
         function performSave() {
-            // تبدیل buyIns به پول برای ذخیره
             const gameToSave = {
                 ...currentGame,
-                buyInsTokens: currentGame.buyIns, // ذخیره ژتون‌ها
-                finalTokensCount: currentGame.finalTokens, // ذخیره ژتون‌های نهایی
+                buyInsTokens: currentGame.buyIns,
+                finalTokensCount: currentGame.finalTokens,
                 buyIns: {},
                 finalChips: {}
             };
 
-            // تبدیل به پول برای نمایش در تاریخچه
             currentGame.players.forEach(player => {
                 gameToSave.buyIns[player] = (currentGame.buyIns[player] / TOKENS_PER_BUY) * PRICE_PER_BUY;
                 gameToSave.finalChips[player] = (currentGame.finalTokens[player] / TOKENS_PER_BUY) * PRICE_PER_BUY;
             });
 
             gameHistory.push(gameToSave);
-            saveToStorage();
+            localStorage.setItem('pokerGameHistory', JSON.stringify(gameHistory));
+            localStorage.removeItem('currentGame'); // حذف auto-save
             
-            showAlert('بازی با موفقیت ذخیره شد!', 'success');
+            showAlert('🎉 بازی با موفقیت ذخیره شد!', 'success');
             
             setTimeout(() => {
                 resetGame();
@@ -1220,20 +1266,92 @@
                 results: {}
             };
 
-            selectedPlayer = null;
-            finishSelectedPlayer = null;
-
-            document.getElementById('setup-phase').style.display = 'block';
-            document.getElementById('game-phase').style.display = 'none';
-            document.getElementById('finish-phase').style.display = 'none';
-            document.getElementById('add-player-in-game').style.display = 'none';
+            document.getElementById('finish-section').style.display = 'none';
+            document.getElementById('finish-btn').style.display = 'block';
+            document.getElementById('saved-game-notice').innerHTML = '';
 
             setDefaultPersianDate();
-            document.getElementById('players-list').innerHTML = '';
-            
-            updatePlayersList();
+            renderAvailablePlayers();
+            renderActivePlayers();
+            updateGameSummary();
         }
 
+        function startNewGame() {
+            if (currentGame.players.length > 0) {
+                showConfirm('آیا مطمئنید؟ بازی فعلی ذخیره نشده حذف خواهد شد.', () => {
+                    localStorage.removeItem('currentGame');
+                    resetGame();
+                    closeMenu();
+                    showAlert('بازی جدید شروع شد', 'success');
+                });
+            } else {
+                localStorage.removeItem('currentGame');
+                resetGame();
+                closeMenu();
+            }
+        }
+
+        // مدیریت بازیکنان
+        function addNewPlayer() {
+            const input = document.getElementById('new-player-input');
+            const playerName = input.value.trim();
+
+            if (!playerName) {
+                showAlert('لطفا نام بازیکن را وارد کنید', 'danger');
+                return;
+            }
+
+            if (allPlayersList.includes(playerName)) {
+                showAlert('این بازیکن قبلاً ثبت شده است', 'warning');
+                return;
+            }
+
+            allPlayersList.push(playerName);
+            localStorage.setItem('allPlayersList', JSON.stringify(allPlayersList));
+            input.value = '';
+            
+            renderAllPlayersList();
+            renderAvailablePlayers();
+            showAlert(`${playerName} اضافه شد`, 'success');
+        }
+
+        function renderAllPlayersList() {
+            const container = document.getElementById('all-players-list');
+            
+            if (allPlayersList.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">هنوز بازیکنی ثبت نشده</p>';
+                return;
+            }
+
+            container.innerHTML = '<h4 style="margin: 20px 0 10px 0;">لیست بازیکنان:</h4>';
+
+            allPlayersList.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-row';
+                playerDiv.innerHTML = `
+                    <div class="player-info">
+                        <div class="player-name">${player}</div>
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="btn btn-danger btn-small" onclick="deletePlayer(${index})">حذف</button>
+                    </div>
+                `;
+                container.appendChild(playerDiv);
+            });
+        }
+
+        function deletePlayer(index) {
+            const playerName = allPlayersList[index];
+            showConfirm(`آیا مطمئنید که می‌خواهید "${playerName}" را حذف کنید؟`, () => {
+                allPlayersList.splice(index, 1);
+                localStorage.setItem('allPlayersList', JSON.stringify(allPlayersList));
+                renderAllPlayersList();
+                renderAvailablePlayers();
+                showAlert('بازیکن حذف شد', 'info');
+            });
+        }
+
+        // تاریخچه و آمار
         function loadHistory() {
             const historyDiv = document.getElementById('games-history');
             
@@ -1270,8 +1388,8 @@
                     </div>
                     ${playersResults}
                     <button onclick="deleteGame(${gameHistory.length - 1 - index})" 
-                            style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-top: 10px;">
-                        🗑️ حذف
+                            class="btn btn-danger btn-small" style="margin-top: 10px;">
+                        🗑️ حذف بازی
                     </button>
                 `;
                 
@@ -1284,9 +1402,9 @@
             
             showConfirm(`آیا مطمئنید که می‌خواهید بازی تاریخ ${game.date} را حذف کنید؟`, () => {
                 gameHistory.splice(index, 1);
-                saveToStorage();
+                localStorage.setItem('pokerGameHistory', JSON.stringify(gameHistory));
                 loadHistory();
-                showAlert('بازی حذف شد', 'success');
+                showAlert('بازی حذف شد', 'info');
             });
         }
 
@@ -1300,7 +1418,6 @@
 
             const playerStats = {};
 
-            // محاسبه آمار
             gameHistory.forEach(game => {
                 Object.keys(game.results).forEach(player => {
                     if (!playerStats[player]) {
@@ -1326,7 +1443,6 @@
                         playerStats[player].losses++;
                     }
 
-                    // بهترین و بدترین بازی
                     if (result > playerStats[player].bestGame) {
                         playerStats[player].bestGame = result;
                     }
@@ -1338,7 +1454,6 @@
 
             statsDiv.innerHTML = '';
 
-            // مرتب‌سازی بر اساس سود کل
             const sortedPlayers = Object.keys(playerStats).sort((a, b) => 
                 playerStats[b].totalProfit - playerStats[a].totalProfit
             );
@@ -1358,7 +1473,7 @@
                             <div class="stats-label">تعداد بازی</div>
                         </div>
                         <div>
-                            <div class="stats-number ${stats.totalProfit >= 0 ? 'profit' : 'loss'}" style="color: white;">
+                            <div class="stats-number" style="color: white;">
                                 ${stats.totalProfit >= 0 ? '+' : ''}${stats.totalProfit.toLocaleString()}
                             </div>
                             <div class="stats-label">سود/زیان کل</div>
@@ -1375,11 +1490,11 @@
                     <div style="margin-top: 15px; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span>🏆 بهترین:</span>
-                            <span class="profit">+${stats.bestGame.toLocaleString()}</span>
+                            <span>+${stats.bestGame.toLocaleString()}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span>💔 بدترین:</span>
-                            <span class="loss">${stats.worstGame.toLocaleString()}</span>
+                            <span>${stats.worstGame.toLocaleString()}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <span>💰 کل خرید:</span>
@@ -1392,12 +1507,28 @@
             });
         }
 
-        function saveToStorage() {
-            try {
-                localStorage.setItem('pokerGameHistory', JSON.stringify(gameHistory));
-                localStorage.setItem('pokerAllPlayers', JSON.stringify([...allPlayers]));
-            } catch (error) {
-                console.log('Storage not available, keeping in memory');
+        // UI Functions
+        function openMenu() {
+            document.getElementById('sideMenu').classList.add('open');
+            document.querySelector('.menu-overlay').classList.add('show');
+        }
+
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.querySelector('.menu-overlay').classList.remove('show');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            closeMenu();
+
+            if (pageId === 'players') {
+                renderAllPlayersList();
+            } else if (pageId === 'history') {
+                loadHistory();
+            } else if (pageId === 'stats') {
+                loadStats();
             }
         }
 
@@ -1435,32 +1566,11 @@
         }
 
         // Event listeners
-        document.getElementById('player-name').addEventListener('keypress', function(e) {
+        document.getElementById('new-player-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                addPlayer();
+                addNewPlayer();
             }
         });
-
-        document.getElementById('buy-count').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                addBuyIn();
-            }
-        });
-
-        document.getElementById('final-tokens').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                setFinalTokens();
-            }
-        });
-
-        document.getElementById('new-player-name').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                addPlayerInGame();
-            }
-        });
-
-        // Load data on startup
-        updatePlayersList();
     </script>
 </body>
-</html>;
+</html>
